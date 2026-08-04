@@ -44,7 +44,7 @@ export default async function DashboardPage() {
         <h2 className="text-lg font-semibold">Siste samtaler</h2>
         <Link
           href="/dashboard/samtaler"
-          className="text-sm font-medium underline"
+          className="text-sm font-medium text-brand hover:underline"
         >
           Se alle
         </Link>
@@ -55,7 +55,7 @@ export default async function DashboardPage() {
           Ingen samtaler ennå. De vises her så snart en kunde bruker widgeten.
         </p>
       ) : (
-        <ul className="mt-3 divide-y divide-neutral-200 rounded-md border border-neutral-200 dark:divide-neutral-800 dark:border-neutral-800">
+        <ul className="mt-3 divide-y divide-neutral-200 rounded-xl border border-neutral-200 dark:divide-neutral-800 dark:border-neutral-800">
           {sisteSamtaler.map((s) => (
             <li key={s.sessionId} className="p-4 text-sm">
               <div className="mb-1 flex items-center justify-between gap-2">
@@ -85,9 +85,9 @@ export default async function DashboardPage() {
 
 function StatKort({ tittel, verdi }: { tittel: string; verdi: string | number }) {
   return (
-    <div className="rounded-md border border-neutral-200 p-4 dark:border-neutral-800">
+    <div className="rounded-xl border border-neutral-200 p-5 dark:border-neutral-800">
       <p className="text-sm text-neutral-600 dark:text-neutral-400">{tittel}</p>
-      <p className="mt-1 text-2xl font-semibold">{verdi}</p>
+      <p className="mt-1 text-3xl font-semibold tracking-tight">{verdi}</p>
     </div>
   );
 }

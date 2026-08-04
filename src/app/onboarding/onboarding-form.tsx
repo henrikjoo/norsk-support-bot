@@ -18,7 +18,7 @@ export function OnboardingForm() {
           type="text"
           required
           placeholder="F.eks. Nordisk Interiør AS"
-          className="rounded-md border border-neutral-300 px-3 py-2 text-sm outline-none focus:border-neutral-500 dark:border-neutral-700 dark:bg-neutral-900"
+          className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20 dark:border-neutral-700 dark:bg-neutral-900"
         />
       </div>
 
@@ -31,7 +31,7 @@ export function OnboardingForm() {
           name="website_url"
           type="text"
           placeholder="www.dinbutikk.no"
-          className="rounded-md border border-neutral-300 px-3 py-2 text-sm outline-none focus:border-neutral-500 dark:border-neutral-700 dark:bg-neutral-900"
+          className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20 dark:border-neutral-700 dark:bg-neutral-900"
         />
       </div>
 
@@ -44,7 +44,7 @@ export function OnboardingForm() {
       <button
         type="submit"
         disabled={pending}
-        className="mt-2 rounded-md bg-neutral-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-neutral-700 disabled:opacity-60 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
+        className="mt-2 w-full rounded-lg bg-brand px-4 py-2.5 text-sm font-medium text-brand-foreground transition hover:opacity-90 disabled:opacity-50"
       >
         {pending ? "Lagrer…" : "Fortsett"}
       </button>

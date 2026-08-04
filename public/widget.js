@@ -11,7 +11,14 @@
   var origin = new URL(scriptEl.src).origin;
   var open = false;
 
+  var style = document.createElement("style");
+  style.textContent =
+    ".nsb-widget-knapp{transition:transform .15s ease,box-shadow .15s ease}" +
+    ".nsb-widget-knapp:hover{transform:scale(1.06);box-shadow:0 6px 20px rgba(13,148,136,0.4)}";
+  document.head.appendChild(style);
+
   var button = document.createElement("button");
+  button.className = "nsb-widget-knapp";
   button.setAttribute("aria-label", "Åpne chat");
   button.innerHTML = "&#128172;";
   button.style.cssText = [
@@ -21,12 +28,12 @@
     "width:56px",
     "height:56px",
     "border-radius:9999px",
-    "background:#171717",
+    "background:#0d9488",
     "color:#fff",
     "font-size:24px",
     "border:none",
     "cursor:pointer",
-    "box-shadow:0 4px 14px rgba(0,0,0,0.25)",
+    "box-shadow:0 4px 14px rgba(13,148,136,0.35)",
     "z-index:2147483000",
   ].join(";");
 

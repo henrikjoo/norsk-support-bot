@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { hentBedriftForInnloggetBruker } from "@/lib/company";
+import { Logo } from "@/components/logo";
+import { DashboardNav } from "./dashboard-nav";
 
 export default async function DashboardLayout({
   children,
@@ -18,35 +20,28 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex flex-1 flex-col">
-      <header className="flex items-center justify-between border-b border-neutral-200 px-6 py-4 dark:border-neutral-800">
-        <div>
-          <p className="text-sm font-semibold">{company.name}</p>
-          <nav className="mt-1 flex gap-4 text-sm text-neutral-600 dark:text-neutral-400">
-            <Link href="/dashboard" className="hover:underline">
-              Oversikt
-            </Link>
-            <Link href="/dashboard/samtaler" className="hover:underline">
-              Samtaler
-            </Link>
-            <Link href="/dashboard/kunnskapsbase" className="hover:underline">
-              Kunnskapsbase
-            </Link>
-            <Link href="/dashboard/widget" className="hover:underline">
-              Installer widget
-            </Link>
-            <Link href="/dashboard/abonnement" className="hover:underline">
-              Abonnement
-            </Link>
-          </nav>
+      <header className="border-b border-neutral-200 dark:border-neutral-800">
+        <div className="flex items-center justify-between px-6 py-4">
+          <Link href="/dashboard">
+            <Logo />
+          </Link>
+          <div className="flex items-center gap-4">
+            <span className="hidden text-sm text-neutral-500 sm:inline">
+              {company.name}
+            </span>
+            <form action="/auth/logg-ut" method="post">
+              <button
+                type="submit"
+                className="text-sm font-medium text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
+              >
+                Logg ut
+              </button>
+            </form>
+          </div>
         </div>
-        <form action="/auth/logg-ut" method="post">
-          <button
-            type="submit"
-            className="text-sm text-neutral-600 hover:underline dark:text-neutral-400"
-          >
-            Logg ut
-          </button>
-        </form>
+        <div className="px-6 pb-3">
+          <DashboardNav />
+        </div>
       </header>
       <div className="flex-1 px-6 py-8">{children}</div>
     </div>

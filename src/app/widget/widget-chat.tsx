@@ -75,9 +75,9 @@ export function WidgetChat() {
 
   return (
     <div className="flex h-dvh flex-col bg-white">
-      <header className="border-b border-neutral-200 px-4 py-3">
+      <header className="border-b border-neutral-200 bg-brand px-4 py-3.5 text-brand-foreground">
         <p className="text-sm font-semibold">{bedriftsnavn}</p>
-        <p className="text-xs text-neutral-500">Vanligvis svarer vi med det samme</p>
+        <p className="text-xs opacity-80">Vanligvis svarer vi med det samme</p>
       </header>
 
       <div className="flex-1 space-y-3 overflow-y-auto px-4 py-3">
@@ -89,7 +89,7 @@ export function WidgetChat() {
             <div
               className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm ${
                 m.rolle === "bruker"
-                  ? "bg-neutral-900 text-white"
+                  ? "bg-brand text-brand-foreground"
                   : "bg-neutral-100 text-neutral-900"
               }`}
             >
@@ -114,12 +114,12 @@ export function WidgetChat() {
           onChange={(e) => setInput(e.target.value)}
           placeholder="Skriv en melding…"
           disabled={sender}
-          className="flex-1 rounded-full border border-neutral-300 px-4 py-2 text-sm outline-none focus:border-neutral-500 disabled:opacity-60"
+          className="flex-1 rounded-full border border-neutral-300 px-4 py-2 text-sm outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20 disabled:opacity-60"
         />
         <button
           type="submit"
           disabled={sender || !input.trim()}
-          className="rounded-full bg-neutral-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-40"
+          className="rounded-full bg-brand px-4 py-2 text-sm font-medium text-brand-foreground transition hover:opacity-90 disabled:opacity-40"
         >
           Send
         </button>

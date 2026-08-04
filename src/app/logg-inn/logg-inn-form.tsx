@@ -3,17 +3,27 @@
 import Link from "next/link";
 import { useActionState } from "react";
 import { loggInn } from "./actions";
+import { AuthShell } from "@/components/auth-shell";
+
+const inputClass =
+  "w-full rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20 dark:border-neutral-700 dark:bg-neutral-900";
 
 export function LoggInnForm({ neste }: { neste: string }) {
   const [state, action, pending] = useActionState(loggInn, undefined);
 
   return (
-    <div className="w-full max-w-sm">
-      <h1 className="mb-1 text-2xl font-semibold tracking-tight">Logg inn</h1>
-      <p className="mb-6 text-sm text-neutral-600 dark:text-neutral-400">
-        Logg inn for å administrere kunnskapsbasen og se samtaler.
-      </p>
-
+    <AuthShell
+      tittel="Logg inn"
+      undertekst="Logg inn for å administrere kunnskapsbasen og se samtaler."
+      bunntekst={
+        <>
+          Ny hos oss?{" "}
+          <Link href="/registrer" className="font-medium text-brand hover:underline">
+            Registrer bedriften din
+          </Link>
+        </>
+      }
+    >
       <form action={action} className="flex flex-col gap-4">
         <input type="hidden" name="neste" value={neste} />
 
@@ -27,7 +37,7 @@ export function LoggInnForm({ neste }: { neste: string }) {
             type="email"
             autoComplete="email"
             required
-            className="rounded-md border border-neutral-300 px-3 py-2 text-sm outline-none focus:border-neutral-500 dark:border-neutral-700 dark:bg-neutral-900"
+            className={inputClass}
           />
         </div>
 
@@ -41,7 +51,7 @@ export function LoggInnForm({ neste }: { neste: string }) {
             type="password"
             autoComplete="current-password"
             required
-            className="rounded-md border border-neutral-300 px-3 py-2 text-sm outline-none focus:border-neutral-500 dark:border-neutral-700 dark:bg-neutral-900"
+            className={inputClass}
           />
         </div>
 
@@ -54,18 +64,11 @@ export function LoggInnForm({ neste }: { neste: string }) {
         <button
           type="submit"
           disabled={pending}
-          className="mt-2 rounded-md bg-neutral-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-neutral-700 disabled:opacity-60 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
+          className="mt-2 w-full rounded-lg bg-brand px-4 py-2.5 text-sm font-medium text-brand-foreground transition hover:opacity-90 disabled:opacity-50"
         >
           {pending ? "Logger inn…" : "Logg inn"}
         </button>
       </form>
-
-      <p className="mt-6 text-sm text-neutral-600 dark:text-neutral-400">
-        Ny hos oss?{" "}
-        <Link href="/registrer" className="font-medium underline">
-          Registrer bedriften din
-        </Link>
-      </p>
-    </div>
+    </AuthShell>
   );
 }

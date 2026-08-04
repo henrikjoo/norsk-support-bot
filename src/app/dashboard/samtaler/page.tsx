@@ -38,7 +38,7 @@ export default async function SamtalerPage() {
           {samtaler.map((s) => (
             <li
               key={s.sessionId}
-              className="rounded-md border border-neutral-200 dark:border-neutral-800"
+              className="rounded-xl border border-neutral-200 dark:border-neutral-800"
             >
               <div className="flex items-center justify-between gap-2 border-b border-neutral-200 px-4 py-2.5 dark:border-neutral-800">
                 <p className="text-xs text-neutral-500">
@@ -57,7 +57,7 @@ export default async function SamtalerPage() {
                 {s.meldinger.map((m) => (
                   <div key={m.id} className="flex flex-col gap-1.5">
                     <p className="text-sm font-medium">{m.customer_message}</p>
-                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                    <p className="border-l-2 border-brand/30 pl-3 text-sm text-neutral-600 dark:text-neutral-400">
                       {m.ai_response}
                     </p>
                   </div>

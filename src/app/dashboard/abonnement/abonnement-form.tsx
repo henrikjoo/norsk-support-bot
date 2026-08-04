@@ -36,7 +36,7 @@ export function AbonnementForm({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="rounded-md border border-neutral-200 p-4 dark:border-neutral-800">
+      <div className="rounded-xl border border-neutral-200 p-5 dark:border-neutral-800">
         <p className="text-sm text-neutral-600 dark:text-neutral-400">Status</p>
         <p className={`mt-1 text-lg font-semibold ${STATUS_FARGE[status]}`}>
           {STATUS_TEKST[status]}
@@ -48,7 +48,7 @@ export function AbonnementForm({
           <button
             type="submit"
             disabled={portalPending}
-            className="rounded-md border border-neutral-300 px-4 py-2.5 text-sm font-medium hover:bg-neutral-50 disabled:opacity-60 dark:border-neutral-700 dark:hover:bg-neutral-900"
+            className="rounded-lg border border-neutral-300 px-4 py-2.5 text-sm font-medium hover:bg-neutral-50 disabled:opacity-60 dark:border-neutral-700 dark:hover:bg-neutral-900"
           >
             {portalPending ? "Åpner…" : "Administrer abonnement"}
           </button>
@@ -65,7 +65,7 @@ export function AbonnementForm({
           <button
             type="submit"
             disabled={startPending}
-            className="rounded-md bg-neutral-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-neutral-700 disabled:opacity-60 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
+            className="rounded-lg bg-brand px-4 py-2.5 text-sm font-medium text-brand-foreground transition hover:opacity-90 disabled:opacity-50"
           >
             {startPending ? "Starter…" : "Start abonnement – 990 kr/mnd"}
           </button>
