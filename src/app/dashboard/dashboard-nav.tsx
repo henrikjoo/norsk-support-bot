@@ -15,7 +15,7 @@ export function DashboardNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex gap-1 overflow-x-auto text-sm font-medium">
+    <nav className="flex flex-wrap gap-1 text-sm font-medium">
       {LENKER.map((lenke) => {
         const aktiv =
           lenke.href === "/dashboard"
