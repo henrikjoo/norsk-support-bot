@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { hentBedriftForInnloggetBruker } from "@/lib/company";
+import { grupperISamtaler } from "@/lib/samtaler";
 import type { Conversation } from "@/lib/types";
 
 export default async function DashboardPage() {
@@ -13,27 +14,19 @@ export default async function DashboardPage() {
   const supabase = await createClient();
   const companyId = resultat.company.id;
 
-  const [totalResultat, eskalertResultat, sisteResultat] = await Promise.all([
-    supabase
-      .from("conversations")
-      .select("*", { count: "exact", head: true })
-      .eq("company_id", companyId),
-    supabase
-      .from("conversations")
-      .select("*", { count: "exact", head: true })
-      .eq("company_id", companyId)
-      .eq("escalated", true),
-    supabase
-      .from("conversations")
-      .select("*")
-      .eq("company_id", companyId)
-      .order("created_at", { ascending: false })
-      .limit(5),
-  ]);
+  const { data } = await supabase
+    .from("conversations")
+    .select("*")
+    .eq("company_id", companyId)
+    .order("created_at", { ascending: false })
+    .limit(500);
 
-  const totalAntall = totalResultat.count ?? 0;
-  const eskalertAntall = eskalertResultat.count ?? 0;
-  const sisteSamtaler = (sisteResultat.data as Conversation[] | null) ?? [];
+  const rader = (data as Conversation[] | null) ?? [];
+  const samtaler = grupperISamtaler(rader);
+
+  const totalAntall = samtaler.length;
+  const eskalertAntall = samtaler.filter((s) => s.eskalert).length;
+  const sisteSamtaler = samtaler.slice(0, 5);
   const eskalertAndel =
     totalAntall > 0 ? Math.round((eskalertAntall / totalAntall) * 100) : 0;
 
@@ -64,16 +57,24 @@ export default async function DashboardPage() {
       ) : (
         <ul className="mt-3 divide-y divide-neutral-200 rounded-md border border-neutral-200 dark:divide-neutral-800 dark:border-neutral-800">
           {sisteSamtaler.map((s) => (
-            <li key={s.id} className="p-4 text-sm">
-              <p className="font-medium">{s.customer_message}</p>
+            <li key={s.sessionId} className="p-4 text-sm">
+              <div className="mb-1 flex items-center justify-between gap-2">
+                <p className="text-xs text-neutral-500">
+                  {new Date(s.forsteTidspunkt).toLocaleString("nb-NO")}
+                  {" · "}
+                  {s.meldinger.length}{" "}
+                  {s.meldinger.length === 1 ? "melding" : "meldinger"}
+                </p>
+                {s.eskalert && (
+                  <span className="inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-900/40 dark:text-amber-300">
+                    Eskalert
+                  </span>
+                )}
+              </div>
+              <p className="font-medium">{s.meldinger[0].customer_message}</p>
               <p className="mt-1 text-neutral-600 dark:text-neutral-400">
-                {s.ai_response}
+                {s.meldinger[0].ai_response}
               </p>
-              {s.escalated && (
-                <span className="mt-2 inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-900/40 dark:text-amber-300">
-                  Eskalert
-                </span>
-              )}
             </li>
           ))}
         </ul>

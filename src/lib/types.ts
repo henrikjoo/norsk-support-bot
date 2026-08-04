@@ -23,6 +23,7 @@ export type KnowledgeBase = {
 export type Conversation = {
   id: string;
   company_id: string;
+  session_id: string;
   customer_message: string;
   ai_response: string;
   escalated: boolean;

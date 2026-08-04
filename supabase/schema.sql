@@ -58,10 +58,12 @@ create policy "Eier kan oppdatere egen kunnskapsbase"
     company_id in (select id from public.companies where owner_id = auth.uid())
   );
 
--- Samtalehistorikk (én rad per kundehenvendelse + AI-svar)
+-- Samtalehistorikk (én rad per kundehenvendelse + AI-svar).
+-- session_id grupperer meldinger som hører til samme chat-økt hos kunden.
 create table if not exists public.conversations (
   id uuid primary key default gen_random_uuid(),
   company_id uuid not null references public.companies(id) on delete cascade,
+  session_id uuid not null default gen_random_uuid(),
   customer_message text not null,
   ai_response text not null,
   escalated boolean not null default false,
@@ -70,6 +72,9 @@ create table if not exists public.conversations (
 
 create index if not exists conversations_company_id_idx
   on public.conversations (company_id, created_at desc);
+
+create index if not exists conversations_session_id_idx
+  on public.conversations (company_id, session_id, created_at);
 
 alter table public.conversations enable row level security;
 

@@ -27,8 +27,9 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { companyId, message } =
-    (body as { companyId?: unknown; message?: unknown }) ?? {};
+  const { companyId, message, sessionId } =
+    (body as { companyId?: unknown; message?: unknown; sessionId?: unknown }) ??
+    {};
 
   if (typeof companyId !== "string" || !companyId) {
     return NextResponse.json(
@@ -45,6 +46,12 @@ export async function POST(request: NextRequest) {
   if (message.length > 2000) {
     return NextResponse.json(
       { error: "Spørsmålet er for langt." },
+      { status: 400, headers: CORS_HEADERS },
+    );
+  }
+  if (typeof sessionId !== "string" || !sessionId) {
+    return NextResponse.json(
+      { error: "Mangler sessionId." },
       { status: 400, headers: CORS_HEADERS },
     );
   }
@@ -93,10 +100,26 @@ Du skal KUN svare basert på informasjonen i kunnskapsbasen nedenfor. Ikke bruk 
 
 Hvis svaret på kundens spørsmål ikke finnes i kunnskapsbasen, skal du svare nøyaktig med: "${USIKKER_SVAR}"
 
-Svar alltid på norsk, kort og vennlig.
+Svar alltid på norsk, kort og vennlig. Du fører en løpende samtale med kunden - bruk tidligere meldinger i samtalen til å forstå oppfølgingsspørsmål og referanser til det som ble sagt tidligere.
 
 Kunnskapsbase:
 ${kontekst || "(Kunnskapsbasen er tom.)"}`;
+
+  const { data: historikk } = await supabase
+    .from("conversations")
+    .select("customer_message, ai_response")
+    .eq("company_id", companyId)
+    .eq("session_id", sessionId)
+    .order("created_at", { ascending: true })
+    .limit(10);
+
+  const samtalemeldinger: Array<{ role: "user" | "assistant"; content: string }> =
+    [];
+  for (const rad of historikk ?? []) {
+    samtalemeldinger.push({ role: "user", content: rad.customer_message });
+    samtalemeldinger.push({ role: "assistant", content: rad.ai_response });
+  }
+  samtalemeldinger.push({ role: "user", content: message });
 
   try {
     const response = await anthropic.messages.create({
@@ -105,7 +128,7 @@ ${kontekst || "(Kunnskapsbasen er tom.)"}`;
       thinking: { type: "disabled" },
       output_config: { effort: "low" },
       system: systemPrompt,
-      messages: [{ role: "user", content: message }],
+      messages: samtalemeldinger,
     });
 
     let svar = USIKKER_SVAR;
@@ -116,6 +139,7 @@ ${kontekst || "(Kunnskapsbasen er tom.)"}`;
 
     const { error: lagringsfeil } = await supabase.from("conversations").insert({
       company_id: companyId,
+      session_id: sessionId,
       customer_message: message,
       ai_response: svar,
       escalated: svar.trim() === USIKKER_SVAR,

@@ -9,6 +9,7 @@ export function WidgetChat() {
   const searchParams = useSearchParams();
   const companyId = searchParams.get("companyId") ?? "";
 
+  const [sessionId] = useState(() => crypto.randomUUID());
   const [bedriftsnavn, setBedriftsnavn] = useState<string>("Kundeservice");
   const [meldinger, setMeldinger] = useState<Melding[]>([
     {
@@ -47,7 +48,7 @@ export function WidgetChat() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ companyId, message: tekst }),
+        body: JSON.stringify({ companyId, message: tekst, sessionId }),
       });
       const data = await res.json();
       const svar: string = res.ok
