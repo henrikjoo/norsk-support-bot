@@ -51,11 +51,19 @@ export async function POST(request: NextRequest) {
 
   const supabase = createAdminClient();
 
-  const { data: company } = await supabase
+  const { data: company, error: bedriftsfeil } = await supabase
     .from("companies")
     .select("id, name, subscription_status")
     .eq("id", companyId)
     .maybeSingle();
+
+  if (bedriftsfeil) {
+    console.error("Kunne ikke hente bedrift:", bedriftsfeil);
+    return NextResponse.json(
+      { error: "Noe gikk galt. Prøv igjen." },
+      { status: 500, headers: CORS_HEADERS },
+    );
+  }
 
   if (!company) {
     return NextResponse.json(
