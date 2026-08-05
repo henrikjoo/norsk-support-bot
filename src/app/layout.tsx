@@ -15,6 +15,12 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Kundeservice Norge",
   description: "AI-kundeservice for norske nettbutikker",
+  openGraph: {
+    title: "Kundeservice Norge",
+    description: "AI-kundeservice for norske nettbutikker",
+    locale: "nb_NO",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
