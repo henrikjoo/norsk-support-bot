@@ -71,8 +71,19 @@ export default function RegistrerPage() {
 
         <p className="text-center text-xs text-neutral-500">
           Ved å opprette konto godtar du{" "}
+          <Link href="/vilkar" className="font-medium text-brand hover:underline">
+            vilkårene
+          </Link>
+          ,{" "}
           <Link href="/personvern" className="font-medium text-brand hover:underline">
             personvernerklæringen
+          </Link>{" "}
+          og{" "}
+          <Link
+            href="/databehandleravtale"
+            className="font-medium text-brand hover:underline"
+          >
+            databehandleravtalen
           </Link>
           .
         </p>

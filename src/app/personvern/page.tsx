@@ -140,6 +140,17 @@ export default function PersonvernPage() {
       <footer className="border-t border-neutral-200 px-6 py-8 text-center text-xs text-neutral-500 dark:border-neutral-800">
         <Logo className="mb-3 justify-center" />
         AI-kundeservice for norske nettbutikker.
+        <div className="mt-3 flex justify-center gap-4">
+          <Link href="/vilkar" className="hover:underline">
+            Vilkår
+          </Link>
+          <Link href="/personvern" className="hover:underline">
+            Personvern
+          </Link>
+          <Link href="/databehandleravtale" className="hover:underline">
+            Databehandleravtale
+          </Link>
+        </div>
       </footer>
     </div>
   );
