@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { anthropic, CHAT_MODEL } from "@/lib/anthropic";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { harTilgang } from "@/lib/subscription";
 import type { KnowledgeBase } from "@/lib/types";
 
 const CORS_HEADERS = {
@@ -60,7 +61,7 @@ export async function POST(request: NextRequest) {
 
   const { data: company, error: bedriftsfeil } = await supabase
     .from("companies")
-    .select("id, name, subscription_status")
+    .select("id, name, subscription_status, trial_ends_at")
     .eq("id", companyId)
     .maybeSingle();
 
@@ -79,7 +80,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  if (company.subscription_status !== "active") {
+  if (!harTilgang(company)) {
     return NextResponse.json(
       { answer: "Denne chatten er ikke tilgjengelig for øyeblikket." },
       { headers: CORS_HEADERS },

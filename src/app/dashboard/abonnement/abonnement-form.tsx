@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { startAbonnement, apneKundeportal } from "./actions";
+import { erIProveperiode, proveperiodeDagerIgjen } from "@/lib/subscription";
 import type { SubscriptionStatus } from "@/lib/types";
 
 const STATUS_TEKST: Record<SubscriptionStatus, string> = {
@@ -21,9 +22,11 @@ const STATUS_FARGE: Record<SubscriptionStatus, string> = {
 export function AbonnementForm({
   status,
   harStripekunde,
+  trialEndsAt,
 }: {
   status: SubscriptionStatus;
   harStripekunde: boolean;
+  trialEndsAt: string | null;
 }) {
   const [startState, startAction, startPending] = useActionState(
     startAbonnement,
@@ -34,13 +37,30 @@ export function AbonnementForm({
     undefined,
   );
 
+  const iProveperiode = status !== "active" && erIProveperiode(trialEndsAt);
+  const dagerIgjen = proveperiodeDagerIgjen(trialEndsAt);
+  const proveperiodeUtlopt =
+    status !== "active" && trialEndsAt !== null && !iProveperiode;
+
   return (
     <div className="flex flex-col gap-4">
       <div className="rounded-xl border border-neutral-200 p-5 dark:border-neutral-800">
         <p className="text-sm text-neutral-600 dark:text-neutral-400">Status</p>
         <p className={`mt-1 text-lg font-semibold ${STATUS_FARGE[status]}`}>
-          {STATUS_TEKST[status]}
+          {iProveperiode ? "Prøveperiode" : STATUS_TEKST[status]}
         </p>
+        {iProveperiode && (
+          <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+            {dagerIgjen === 0
+              ? "Utløper i dag."
+              : `${dagerIgjen} ${dagerIgjen === 1 ? "dag" : "dager"} igjen.`}
+          </p>
+        )}
+        {proveperiodeUtlopt && (
+          <p className="mt-1 text-sm text-amber-700 dark:text-amber-400">
+            Prøveperioden er utløpt. Start abonnement for å ta widgeten i bruk igjen.
+          </p>
+        )}
       </div>
 
       {status === "active" && harStripekunde && (

@@ -9,9 +9,13 @@ create table if not exists public.companies (
   subscription_status text not null default 'inactive', -- 'inactive' | 'active' | 'past_due' | 'canceled'
   stripe_customer_id text,
   stripe_subscription_id text,
+  trial_ends_at timestamptz,
   created_at timestamptz not null default now(),
   unique (owner_id)
 );
+
+-- Kjør denne linjen separat hvis companies-tabellen allerede finnes fra før:
+-- alter table public.companies add column if not exists trial_ends_at timestamptz;
 
 -- Kunnskapsbase (én rad per bedrift, fritekstfelt for MVP)
 create table if not exists public.knowledge_base (

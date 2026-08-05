@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { hentBedriftForInnloggetBruker } from "@/lib/company";
+import { erIProveperiode, proveperiodeDagerIgjen } from "@/lib/subscription";
 import { Logo } from "@/components/logo";
 import { DashboardNav } from "./dashboard-nav";
 
@@ -17,6 +18,14 @@ export default async function DashboardLayout({
   }
 
   const { company } = resultat;
+  const iProveperiode =
+    company.subscription_status !== "active" &&
+    erIProveperiode(company.trial_ends_at);
+  const proveperiodeUtlopt =
+    company.subscription_status !== "active" &&
+    company.trial_ends_at !== null &&
+    !iProveperiode;
+  const dagerIgjen = proveperiodeDagerIgjen(company.trial_ends_at);
 
   return (
     <div className="flex flex-1 flex-col">
@@ -43,6 +52,30 @@ export default async function DashboardLayout({
           <DashboardNav />
         </div>
       </header>
+
+      {iProveperiode && (
+        <div className="flex flex-wrap items-center justify-between gap-2 bg-brand-soft px-6 py-2.5 text-sm text-brand">
+          <span>
+            Du er i prøveperioden — {dagerIgjen}{" "}
+            {dagerIgjen === 1 ? "dag" : "dager"} igjen.
+          </span>
+          <Link href="/dashboard/abonnement" className="font-medium hover:underline">
+            Start abonnement
+          </Link>
+        </div>
+      )}
+      {proveperiodeUtlopt && (
+        <div className="flex flex-wrap items-center justify-between gap-2 bg-amber-100 px-6 py-2.5 text-sm text-amber-900 dark:bg-amber-900/40 dark:text-amber-200">
+          <span>
+            Prøveperioden er utløpt. Widgeten svarer ikke kunder før du starter
+            abonnement.
+          </span>
+          <Link href="/dashboard/abonnement" className="font-medium hover:underline">
+            Start abonnement
+          </Link>
+        </div>
+      )}
+
       <div className="flex-1 px-6 py-8">{children}</div>
     </div>
   );

@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { beregnProveperiodeSlutt } from "@/lib/subscription";
 
 export type OnboardingState = { error?: string } | undefined;
 
@@ -31,7 +32,12 @@ export async function fullforOnboarding(
 
   const { data: company, error } = await supabase
     .from("companies")
-    .insert({ owner_id: user.id, name, website_url: websiteUrl || null })
+    .insert({
+      owner_id: user.id,
+      name,
+      website_url: websiteUrl || null,
+      trial_ends_at: beregnProveperiodeSlutt(),
+    })
     .select("id")
     .single();
 

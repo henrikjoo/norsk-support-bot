@@ -67,7 +67,7 @@ export default function Home() {
             </Link>
           </div>
           <p className="text-xs text-neutral-500">
-            990 kr/mnd · ingen bindingstid
+            14 dager gratis prøveperiode · 990 kr/mnd · ingen bindingstid
           </p>
         </section>
 
