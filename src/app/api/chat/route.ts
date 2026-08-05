@@ -2,7 +2,10 @@ import { NextResponse, type NextRequest } from "next/server";
 import { anthropic, CHAT_MODEL } from "@/lib/anthropic";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { harTilgang } from "@/lib/subscription";
+import { sendEskaleringsvarsel } from "@/lib/resend";
 import type { KnowledgeBase } from "@/lib/types";
+
+const MAKS_MELDINGER_PER_MINUTT = 20;
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -61,7 +64,7 @@ export async function POST(request: NextRequest) {
 
   const { data: company, error: bedriftsfeil } = await supabase
     .from("companies")
-    .select("id, name, subscription_status, trial_ends_at")
+    .select("id, name, owner_id, subscription_status, trial_ends_at")
     .eq("id", companyId)
     .maybeSingle();
 
@@ -84,6 +87,20 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { answer: "Denne chatten er ikke tilgjengelig for øyeblikket." },
       { headers: CORS_HEADERS },
+    );
+  }
+
+  const ettMinuttSiden = new Date(Date.now() - 60_000).toISOString();
+  const { count: nyligeMeldinger } = await supabase
+    .from("conversations")
+    .select("id", { count: "exact", head: true })
+    .eq("company_id", companyId)
+    .gte("created_at", ettMinuttSiden);
+
+  if ((nyligeMeldinger ?? 0) >= MAKS_MELDINGER_PER_MINUTT) {
+    return NextResponse.json(
+      { error: "For mange forespørsler. Vent litt og prøv igjen." },
+      { status: 429, headers: CORS_HEADERS },
     );
   }
 
@@ -138,15 +155,32 @@ ${kontekst || "(Kunnskapsbasen er tom.)"}`;
       svar = tekstBlokk?.type === "text" ? tekstBlokk.text : USIKKER_SVAR;
     }
 
+    const eskalert = svar.includes(USIKKER_SVAR);
+
     const { error: lagringsfeil } = await supabase.from("conversations").insert({
       company_id: companyId,
       session_id: sessionId,
       customer_message: message,
       ai_response: svar,
-      escalated: svar.includes(USIKKER_SVAR),
+      escalated: eskalert,
     });
     if (lagringsfeil) {
       console.error("Kunne ikke lagre samtale:", lagringsfeil);
+    }
+
+    if (eskalert) {
+      const { data: eierData } = await supabase.auth.admin.getUserById(
+        company.owner_id,
+      );
+      const eierEpost = eierData?.user?.email;
+      if (eierEpost) {
+        await sendEskaleringsvarsel({
+          til: eierEpost,
+          bedriftsnavn: company.name,
+          kundemelding: message,
+          dashboardUrl: `${new URL(request.url).origin}/dashboard/samtaler`,
+        });
+      }
     }
 
     return NextResponse.json({ answer: svar }, { headers: CORS_HEADERS });
