@@ -43,7 +43,7 @@ export default function Home() {
       <main className="flex flex-1 flex-col items-center px-6 pb-24">
         <section className="flex max-w-2xl flex-col items-center gap-6 pt-16 pb-20 text-center sm:pt-24">
           <span className="rounded-full bg-brand-soft px-3 py-1 text-xs font-medium text-brand">
-            Bygget for norske nettbutikker
+            14 dager gratis prøveperiode
           </span>
           <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
             AI-kundeservice som faktisk svarer riktig
@@ -57,7 +57,7 @@ export default function Home() {
               href="/registrer"
               className="rounded-md bg-brand px-6 py-3 text-sm font-medium text-brand-foreground hover:opacity-90"
             >
-              Kom i gang gratis
+              Prøv gratis i 14 dager
             </Link>
             <Link
               href="/logg-inn"
@@ -67,7 +67,7 @@ export default function Home() {
             </Link>
           </div>
           <p className="text-xs text-neutral-500">
-            14 dager gratis prøveperiode · 990 kr/mnd · ingen bindingstid
+            Ingen kredittkort nødvendig · 990 kr/mnd etter prøveperioden · ingen bindingstid
           </p>
         </section>
 
