@@ -143,7 +143,7 @@ ${kontekst || "(Kunnskapsbasen er tom.)"}`;
       session_id: sessionId,
       customer_message: message,
       ai_response: svar,
-      escalated: svar.trim() === USIKKER_SVAR,
+      escalated: svar.includes(USIKKER_SVAR),
     });
     if (lagringsfeil) {
       console.error("Kunne ikke lagre samtale:", lagringsfeil);
