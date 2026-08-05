@@ -18,7 +18,7 @@ export default function PersonvernPage() {
 
         <div className="flex flex-col gap-8 text-sm leading-relaxed text-neutral-700 dark:text-neutral-300">
           <p>
-            SupportAI ("vi", "oss") leverer AI-basert kundeservice til norske
+            Kundeservice Norge ("vi", "oss") leverer AI-basert kundeservice til norske
             nettbutikker. Denne personvernerklæringen forklarer hvilke
             opplysninger vi behandler, hvorfor, og hvilke rettigheter du har.
           </p>

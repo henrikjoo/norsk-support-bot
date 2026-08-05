@@ -50,7 +50,7 @@ export default function Home() {
           </h1>
           <p className="max-w-lg text-base text-neutral-600 sm:text-lg dark:text-neutral-400">
             Svar kundene dine automatisk, 24/7, basert på din egen FAQ og
-            policy — uten å måtte betale for Zendesk eller Intercom.
+            policy.
           </p>
           <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
             <Link

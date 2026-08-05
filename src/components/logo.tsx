@@ -23,7 +23,7 @@ export function Logo({ className = "" }: { className?: string }) {
     <span className={`inline-flex items-center gap-2 ${className}`}>
       <LogoMerke />
       <span className="text-sm font-semibold tracking-tight">
-        Support<span className="text-brand">AI</span>
+        Kundeservice <span className="text-brand">Norge</span>
       </span>
     </span>
   );

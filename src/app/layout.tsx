@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Norsk Support Bot",
+  title: "Kundeservice Norge",
   description: "AI-kundeservice for norske nettbutikker",
 };
 
