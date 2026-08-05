@@ -132,10 +132,10 @@ export default function VilkarPage() {
             <p>
               Spørsmål om vilkårene? Kontakt oss på{" "}
               <a
-                href="mailto:kontakt@norsk-support-bot.no"
+                href="mailto:kontakt@kundeservicenorge.no"
                 className="font-medium text-brand hover:underline"
               >
-                kontakt@norsk-support-bot.no
+                kontakt@kundeservicenorge.no
               </a>
               .
             </p>
