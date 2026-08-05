@@ -89,6 +89,11 @@ export default function Home() {
       <footer className="border-t border-neutral-200 px-6 py-8 text-center text-xs text-neutral-500 dark:border-neutral-800">
         <Logo className="mb-3 justify-center" />
         AI-kundeservice for norske nettbutikker.
+        <div className="mt-3">
+          <Link href="/personvern" className="hover:underline">
+            Personvern
+          </Link>
+        </div>
       </footer>
     </div>
   );
