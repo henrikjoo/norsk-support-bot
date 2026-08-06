@@ -22,7 +22,7 @@ export async function sendEskaleringsvarsel({
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Kundeservice Norge <onboarding@resend.dev>",
+        from: "Kundeservice Norge <varsel@kundeservicenorge.no>",
         to: til,
         subject: `Ny eskalert samtale hos ${bedriftsnavn}`,
         text: `En kunde fikk ikke svar fra AI-assistenten din:\n\n"${kundemelding}"\n\nSe samtalen i dashbordet: ${dashboardUrl}`,
