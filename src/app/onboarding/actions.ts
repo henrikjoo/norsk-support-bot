@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { beregnProveperiodeSlutt } from "@/lib/subscription";
+import { sendNyKundeVarsel } from "@/lib/resend";
 
 export type OnboardingState = { error?: string } | undefined;
 
@@ -40,6 +41,7 @@ export async function fullforOnboarding(
   }
 
   await supabase.from("knowledge_base").insert({ company_id: company.id });
+  await sendNyKundeVarsel({ bedriftsnavn: name });
 
   redirect("/dashboard/kunnskapsbase");
 }
