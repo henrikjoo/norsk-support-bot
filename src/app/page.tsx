@@ -46,11 +46,10 @@ export default function Home() {
             14 dager gratis prøveperiode
           </span>
           <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
-            AI-kundeservice som faktisk svarer riktig
+            Automatisk kundeservice for nettbutikker
           </h1>
           <p className="max-w-lg text-base text-neutral-600 sm:text-lg dark:text-neutral-400">
-            Svar kundene dine automatisk, 24/7, basert på din egen FAQ og
-            policy.
+            La AI svare dine kunder 24/7. Installer widget på sekunder.
           </p>
           <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
             <Link
