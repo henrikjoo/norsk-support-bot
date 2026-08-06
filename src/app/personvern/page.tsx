@@ -39,9 +39,9 @@ export default function PersonvernPage() {
                 når du registrerer en bedriftskonto.
               </li>
               <li>
-                <strong>Bedriftsopplysninger:</strong> bedriftsnavn og
-                nettside-URL, samt innholdet du selv legger inn i
-                kunnskapsbasen (FAQ, produktinfo, retur- og fraktpolicy).
+                <strong>Bedriftsopplysninger:</strong> bedriftsnavn, samt
+                innholdet du selv legger inn i kunnskapsbasen (FAQ,
+                produktinfo, retur- og fraktpolicy).
               </li>
               <li>
                 <strong>Samtaledata:</strong> meldinger sendt av dine kunder
@@ -95,7 +95,26 @@ export default function PersonvernPage() {
               <li>
                 <strong>Vercel</strong> — hoster nettsiden og applikasjonen.
               </li>
+              <li>
+                <strong>Google Analytics</strong> — måler besøk på
+                markedsføringssidene våre, kun hvis du samtykker via
+                cookie-banneret.
+              </li>
             </ul>
+          </section>
+
+          <section>
+            <h2 className="mb-2 text-base font-semibold text-neutral-900 dark:text-neutral-100">
+              Cookies
+            </h2>
+            <p>
+              Nettsiden bruker nødvendige cookies for innlogging. I tillegg
+              bruker vi Google Analytics til å måle besøk på
+              markedsføringssidene, men kun hvis du velger "Godta" i
+              cookie-banneret. Velger du "Avslå", lastes ingen
+              analytics-cookies. Du kan endre valget ditt ved å tømme
+              nettleserens lagrede data for siden.
+            </p>
           </section>
 
           <section>
