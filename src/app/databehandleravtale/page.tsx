@@ -1,5 +1,10 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Logo } from "@/components/logo";
+
+export const metadata: Metadata = {
+  title: "Databehandleravtale",
+};
 
 export default function DatabehandleravtalePage() {
   return (
