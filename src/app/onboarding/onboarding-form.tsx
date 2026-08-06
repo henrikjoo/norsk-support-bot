@@ -22,19 +22,6 @@ export function OnboardingForm() {
         />
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="website_url" className="text-sm font-medium">
-          Nettside-URL
-        </label>
-        <input
-          id="website_url"
-          name="website_url"
-          type="text"
-          placeholder="www.dinbutikk.no"
-          className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20 dark:border-neutral-700 dark:bg-neutral-900"
-        />
-      </div>
-
       {state?.error && (
         <p className="text-sm text-red-600" role="alert">
           {state.error}
