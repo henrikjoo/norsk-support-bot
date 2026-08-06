@@ -166,6 +166,7 @@ export default function DatabehandleravtalePage() {
       <footer className="border-t border-neutral-200 px-6 py-8 text-center text-xs text-neutral-500 dark:border-neutral-800">
         <Logo className="mb-3 justify-center" />
         AI-kundeservice for norske nettbutikker.
+        <p className="mt-1">Levert av Jørgensen Assist, org.nr. 938217238</p>
         <div className="mt-3 flex justify-center gap-4">
           <Link href="/vilkar" className="hover:underline">
             Vilkår

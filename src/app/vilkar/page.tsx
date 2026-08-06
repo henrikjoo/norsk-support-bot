@@ -17,8 +17,9 @@ export default function VilkarPage() {
         <div className="flex flex-col gap-8 text-sm leading-relaxed text-neutral-700 dark:text-neutral-300">
           <p>
             Disse vilkårene gjelder for bruk av Kundeservice Norge, en
-            AI-basert kundeserviceløsning for norske nettbutikker. Ved å
-            opprette en konto godtar du disse vilkårene.
+            AI-basert kundeserviceløsning for norske nettbutikker, levert av
+            Jørgensen Assist (org.nr. 938217238). Ved å opprette en konto
+            godtar du disse vilkårene.
           </p>
 
           <section>
@@ -146,6 +147,7 @@ export default function VilkarPage() {
       <footer className="border-t border-neutral-200 px-6 py-8 text-center text-xs text-neutral-500 dark:border-neutral-800">
         <Logo className="mb-3 justify-center" />
         AI-kundeservice for norske nettbutikker.
+        <p className="mt-1">Levert av Jørgensen Assist, org.nr. 938217238</p>
         <div className="mt-3 flex justify-center gap-4">
           <Link href="/vilkar" className="hover:underline">
             Vilkår
