@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { getStripe } from "@/lib/stripe";
 import { hentOrigin } from "@/lib/origin";
 import { hentBedriftForInnloggetBruker } from "@/lib/company";
+import { proveperiodeDagerIgjen } from "@/lib/subscription";
 
 export type AbonnementState = { error?: string } | undefined;
 
@@ -17,6 +18,7 @@ export async function startAbonnement(
   }
   const { company } = resultat;
   const origin = await hentOrigin();
+  const dagerIgjen = proveperiodeDagerIgjen(company.trial_ends_at);
 
   let checkoutUrl: string | null;
   try {
@@ -28,7 +30,10 @@ export async function startAbonnement(
       cancel_url: `${origin}/dashboard/abonnement?status=avbrutt`,
       client_reference_id: company.id,
       customer: company.stripe_customer_id ?? undefined,
-      subscription_data: { metadata: { company_id: company.id } },
+      subscription_data: {
+        metadata: { company_id: company.id },
+        ...(dagerIgjen && dagerIgjen > 0 ? { trial_period_days: dagerIgjen } : {}),
+      },
       metadata: { company_id: company.id },
     });
     checkoutUrl = session.url;
