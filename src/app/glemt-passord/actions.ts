@@ -20,7 +20,7 @@ export async function sendTilbakestillingslenke(
   const supabase = await createClient();
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${origin}/tilbakestill-passord`,
+    redirectTo: origin,
   });
 
   if (error) {

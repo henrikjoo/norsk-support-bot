@@ -28,7 +28,7 @@ export async function registrerBedrift(
     email,
     password,
     options: {
-      emailRedirectTo: `${origin}/onboarding`,
+      emailRedirectTo: origin,
     },
   });
 
