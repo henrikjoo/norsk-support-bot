@@ -28,6 +28,7 @@ export async function startAbonnement(
       line_items: [{ price: process.env.STRIPE_PRICE_ID!, quantity: 1 }],
       success_url: `${origin}/dashboard/abonnement?status=success`,
       cancel_url: `${origin}/dashboard/abonnement?status=avbrutt`,
+      allow_promotion_codes: true,
       client_reference_id: company.id,
       customer: company.stripe_customer_id ?? undefined,
       subscription_data: {
