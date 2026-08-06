@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-type Melding = { rolle: "bruker" | "assistent"; tekst: string };
+type Melding = { rolle: "bruker" | "assistent" | "menneske"; tekst: string };
 
 export function WidgetChat() {
   const searchParams = useSearchParams();
@@ -20,6 +20,7 @@ export function WidgetChat() {
   const [input, setInput] = useState("");
   const [sender, setSender] = useState(false);
   const bunnRef = useRef<HTMLDivElement>(null);
+  const sisteSjekkRef = useRef<string>(new Date().toISOString());
 
   useEffect(() => {
     if (!companyId) return;
@@ -34,6 +35,34 @@ export function WidgetChat() {
   useEffect(() => {
     bunnRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [meldinger]);
+
+  useEffect(() => {
+    if (!companyId) return;
+
+    const intervall = setInterval(async () => {
+      try {
+        const res = await fetch(
+          `/api/chat/poll?companyId=${encodeURIComponent(companyId)}&sessionId=${encodeURIComponent(
+            sessionId,
+          )}&after=${encodeURIComponent(sisteSjekkRef.current)}`,
+        );
+        if (!res.ok) return;
+        const data = await res.json();
+        const nye: Array<{ ai_response: string; created_at: string }> = data.svar ?? [];
+        if (nye.length > 0) {
+          setMeldinger((prev) => [
+            ...prev,
+            ...nye.map((n) => ({ rolle: "menneske" as const, tekst: n.ai_response })),
+          ]);
+          sisteSjekkRef.current = nye[nye.length - 1].created_at;
+        }
+      } catch {
+        // stille feil, prøver igjen ved neste intervall
+      }
+    }, 5000);
+
+    return () => clearInterval(intervall);
+  }, [companyId, sessionId]);
 
   async function sendMelding(e: React.FormEvent) {
     e.preventDefault();
@@ -86,14 +115,23 @@ export function WidgetChat() {
             key={i}
             className={`flex ${m.rolle === "bruker" ? "justify-end" : "justify-start"}`}
           >
-            <div
-              className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm ${
-                m.rolle === "bruker"
-                  ? "bg-brand text-brand-foreground"
-                  : "bg-neutral-100 text-neutral-900"
-              }`}
-            >
-              {m.tekst}
+            <div className="max-w-[85%]">
+              {m.rolle === "menneske" && (
+                <p className="mb-1 text-xs font-medium text-neutral-500">
+                  {bedriftsnavn} (svarer direkte)
+                </p>
+              )}
+              <div
+                className={`rounded-2xl px-3 py-2 text-sm ${
+                  m.rolle === "bruker"
+                    ? "bg-brand text-brand-foreground"
+                    : m.rolle === "menneske"
+                      ? "bg-blue-50 text-blue-900 dark:bg-blue-950 dark:text-blue-200"
+                      : "bg-neutral-100 text-neutral-900"
+                }`}
+              >
+                {m.tekst}
+              </div>
             </div>
           </div>
         ))}

@@ -21,6 +21,8 @@ export type KnowledgeBase = {
   updated_at: string;
 };
 
+export type AnsweredBy = "ai" | "human";
+
 export type Conversation = {
   id: string;
   company_id: string;
@@ -28,5 +30,6 @@ export type Conversation = {
   customer_message: string;
   ai_response: string;
   escalated: boolean;
+  answered_by: AnsweredBy;
   created_at: string;
 };

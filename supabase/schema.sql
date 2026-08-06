@@ -62,7 +62,8 @@ create policy "Eier kan oppdatere egen kunnskapsbase"
     company_id in (select id from public.companies where owner_id = auth.uid())
   );
 
--- Samtalehistorikk (én rad per kundehenvendelse + AI-svar).
+-- Samtalehistorikk (én rad per kundehenvendelse + AI-svar, eller ett
+-- menneskelig svar med tom customer_message).
 -- session_id grupperer meldinger som hører til samme chat-økt hos kunden.
 create table if not exists public.conversations (
   id uuid primary key default gen_random_uuid(),
@@ -71,8 +72,12 @@ create table if not exists public.conversations (
   customer_message text not null,
   ai_response text not null,
   escalated boolean not null default false,
+  answered_by text not null default 'ai', -- 'ai' | 'human'
   created_at timestamptz not null default now()
 );
+
+-- Kjør denne linjen separat hvis conversations-tabellen allerede finnes fra før:
+-- alter table public.conversations add column if not exists answered_by text not null default 'ai';
 
 create index if not exists conversations_company_id_idx
   on public.conversations (company_id, created_at desc);
@@ -86,5 +91,12 @@ alter table public.conversations enable row level security;
 create policy "Eier kan se egne samtaler"
   on public.conversations for select
   using (
+    company_id in (select id from public.companies where owner_id = auth.uid())
+  );
+
+-- En bruker kan sende menneskelige svar i egne samtaler
+create policy "Eier kan svare i egne samtaler"
+  on public.conversations for insert
+  with check (
     company_id in (select id from public.companies where owner_id = auth.uid())
   );

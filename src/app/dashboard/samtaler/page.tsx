@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { hentBedriftForInnloggetBruker } from "@/lib/company";
 import { grupperISamtaler } from "@/lib/samtaler";
+import { SvarForm } from "./svar-form";
 import type { Conversation } from "@/lib/types";
 
 export default async function SamtalerPage() {
@@ -56,13 +57,25 @@ export default async function SamtalerPage() {
               <div className="flex flex-col gap-3 p-4">
                 {s.meldinger.map((m) => (
                   <div key={m.id} className="flex flex-col gap-1.5">
-                    <p className="text-sm font-medium">{m.customer_message}</p>
-                    <p className="border-l-2 border-brand/30 pl-3 text-sm text-neutral-600 dark:text-neutral-400">
+                    {m.customer_message && (
+                      <p className="text-sm font-medium">{m.customer_message}</p>
+                    )}
+                    <p
+                      className={`border-l-2 pl-3 text-sm ${
+                        m.answered_by === "human"
+                          ? "border-blue-400 text-blue-700 dark:text-blue-300"
+                          : "border-brand/30 text-neutral-600 dark:text-neutral-400"
+                      }`}
+                    >
+                      {m.answered_by === "human" && (
+                        <span className="mr-1 font-medium">Du:</span>
+                      )}
                       {m.ai_response}
                     </p>
                   </div>
                 ))}
               </div>
+              {s.eskalert && <SvarForm sessionId={s.sessionId} />}
             </li>
           ))}
         </ul>
