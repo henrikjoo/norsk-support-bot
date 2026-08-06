@@ -1,8 +1,8 @@
 "use server";
 
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { hentOrigin } from "@/lib/origin";
 import { oversettAuthFeil } from "@/lib/supabase/feilmeldinger";
 
 export type RegistrerState = { error?: string } | undefined;
@@ -21,7 +21,7 @@ export async function registrerBedrift(
     return { error: "Passordet må være minst 8 tegn." };
   }
 
-  const origin = (await headers()).get("origin");
+  const origin = await hentOrigin();
   const supabase = await createClient();
 
   const { data, error } = await supabase.auth.signUp({

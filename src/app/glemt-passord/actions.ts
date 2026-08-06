@@ -1,7 +1,7 @@
 "use server";
 
-import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
+import { hentOrigin } from "@/lib/origin";
 import { oversettAuthFeil } from "@/lib/supabase/feilmeldinger";
 
 export type GlemtPassordState = { error?: string; success?: boolean } | undefined;
@@ -16,7 +16,7 @@ export async function sendTilbakestillingslenke(
     return { error: "Fyll ut e-postadressen din." };
   }
 
-  const origin = (await headers()).get("origin");
+  const origin = await hentOrigin();
   const supabase = await createClient();
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
