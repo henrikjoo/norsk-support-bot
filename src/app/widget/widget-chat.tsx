@@ -106,7 +106,9 @@ export function WidgetChat() {
     <div className="flex h-dvh flex-col bg-white">
       <header className="border-b border-neutral-200 bg-brand px-4 py-3.5 text-brand-foreground">
         <p className="text-sm font-semibold">{bedriftsnavn}</p>
-        <p className="text-xs opacity-80">Vanligvis svarer vi med det samme</p>
+        <p className="text-xs opacity-80">
+          AI svarer deg — usikker på noe? Da tar et menneske over
+        </p>
       </header>
 
       <div className="flex-1 space-y-3 overflow-y-auto px-4 py-3">
