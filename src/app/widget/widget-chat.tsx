@@ -104,18 +104,34 @@ export function WidgetChat() {
 
   return (
     <div className="flex h-dvh flex-col bg-white">
-      <header className="border-b border-neutral-200 bg-brand px-4 py-3.5 text-brand-foreground">
-        <p className="text-sm font-semibold">{bedriftsnavn}</p>
-        <p className="text-xs opacity-80">
-          AI svarer deg — usikker på noe? Da tar et menneske over
-        </p>
+      <header className="flex items-center gap-3 bg-gradient-to-br from-brand to-brand/85 px-4 py-3.5 text-brand-foreground">
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/15">
+          <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" aria-hidden="true">
+            <path
+              d="M4 5.5C4 4.67 4.67 4 5.5 4h13c.83 0 1.5.67 1.5 1.5v9c0 .83-.67 1.5-1.5 1.5H9l-4 4v-4H5.5A1.5 1.5 0 0 1 4 14.5v-9Z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
+        <div className="min-w-0">
+          <p className="truncate text-sm font-semibold">{bedriftsnavn}</p>
+          <p className="truncate text-xs opacity-80">
+            AI svarer deg — usikker på noe? Da tar et menneske over
+          </p>
+        </div>
       </header>
+
+      <p className="border-b border-neutral-100 bg-neutral-50 px-4 py-1.5 text-center text-[11px] text-neutral-400">
+        {bedriftsnavn} kan se denne samtalen
+      </p>
 
       <div className="flex-1 space-y-3 overflow-y-auto px-4 py-3">
         {meldinger.map((m, i) => (
           <div
             key={i}
-            className={`flex ${m.rolle === "bruker" ? "justify-end" : "justify-start"}`}
+            className={`flex animate-[melding-inn_0.25s_ease-out] ${
+              m.rolle === "bruker" ? "justify-end" : "justify-start"
+            }`}
           >
             <div className="max-w-[85%]">
               {m.rolle === "menneske" && (
@@ -124,12 +140,12 @@ export function WidgetChat() {
                 </p>
               )}
               <div
-                className={`rounded-2xl px-3 py-2 text-sm ${
+                className={`px-3 py-2 text-sm shadow-sm ${
                   m.rolle === "bruker"
-                    ? "bg-brand text-brand-foreground"
+                    ? "rounded-2xl rounded-br-md bg-brand text-brand-foreground"
                     : m.rolle === "menneske"
-                      ? "bg-blue-50 text-blue-900 dark:bg-blue-950 dark:text-blue-200"
-                      : "bg-neutral-100 text-neutral-900"
+                      ? "rounded-2xl rounded-bl-md bg-blue-50 text-blue-900 dark:bg-blue-950 dark:text-blue-200"
+                      : "rounded-2xl rounded-bl-md bg-neutral-100 text-neutral-900"
                 }`}
               >
                 {m.tekst}
@@ -139,8 +155,10 @@ export function WidgetChat() {
         ))}
         {sender && (
           <div className="flex justify-start">
-            <div className="max-w-[85%] rounded-2xl bg-neutral-100 px-3 py-2 text-sm text-neutral-500">
-              Skriver…
+            <div className="flex items-center gap-1 rounded-2xl rounded-bl-md bg-neutral-100 px-3.5 py-3">
+              <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-neutral-400 [animation-delay:-0.3s]" />
+              <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-neutral-400 [animation-delay:-0.15s]" />
+              <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-neutral-400" />
             </div>
           </div>
         )}
@@ -159,9 +177,12 @@ export function WidgetChat() {
         <button
           type="submit"
           disabled={sender || !input.trim()}
-          className="rounded-full bg-brand px-4 py-2 text-sm font-medium text-brand-foreground transition hover:opacity-90 disabled:opacity-40"
+          aria-label="Send melding"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand text-brand-foreground transition hover:opacity-90 disabled:opacity-40"
         >
-          Send
+          <svg viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4">
+            <path d="M2.94 2.06 17.94 9.4a1 1 0 0 1 0 1.79L2.94 18.5a1 1 0 0 1-1.44-1.11L3.6 10 1.5 3.17a1 1 0 0 1 1.44-1.11Z" />
+          </svg>
         </button>
       </form>
     </div>
