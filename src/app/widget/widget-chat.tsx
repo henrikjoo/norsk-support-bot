@@ -11,6 +11,7 @@ export function WidgetChat() {
 
   const [sessionId] = useState(() => crypto.randomUUID());
   const [bedriftsnavn, setBedriftsnavn] = useState<string>("Kundeservice");
+  const [farge, setFarge] = useState<string>("#0d9488");
   const [meldinger, setMeldinger] = useState<Melding[]>([
     {
       rolle: "assistent",
@@ -28,6 +29,7 @@ export function WidgetChat() {
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (data?.name) setBedriftsnavn(data.name);
+        if (data?.widget_color) setFarge(data.widget_color);
       })
       .catch(() => {});
   }, [companyId]);
@@ -103,8 +105,11 @@ export function WidgetChat() {
   }
 
   return (
-    <div className="flex h-dvh flex-col bg-white">
-      <header className="flex items-center gap-3 bg-gradient-to-br from-brand to-brand/85 px-4 py-3.5 text-brand-foreground">
+    <div
+      className="flex h-dvh flex-col bg-white"
+      style={{ "--widget-farge": farge } as React.CSSProperties}
+    >
+      <header className="flex items-center gap-3 bg-[var(--widget-farge)] bg-gradient-to-br from-[var(--widget-farge)] to-[var(--widget-farge)]/85 px-4 py-3.5 text-white">
         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/15">
           <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" aria-hidden="true">
             <path
@@ -142,7 +147,7 @@ export function WidgetChat() {
               <div
                 className={`px-3 py-2 text-sm shadow-sm ${
                   m.rolle === "bruker"
-                    ? "rounded-2xl rounded-br-md bg-brand text-brand-foreground"
+                    ? "rounded-2xl rounded-br-md bg-[var(--widget-farge)] text-white"
                     : m.rolle === "menneske"
                       ? "rounded-2xl rounded-bl-md bg-blue-50 text-blue-900 dark:bg-blue-950 dark:text-blue-200"
                       : "rounded-2xl rounded-bl-md bg-neutral-100 text-neutral-900"
@@ -172,13 +177,13 @@ export function WidgetChat() {
           onChange={(e) => setInput(e.target.value)}
           placeholder="Skriv en melding…"
           disabled={sender}
-          className="flex-1 rounded-full border border-neutral-300 px-4 py-2 text-sm outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20 disabled:opacity-60"
+          className="flex-1 rounded-full border border-neutral-300 px-4 py-2 text-sm outline-none transition focus:border-[var(--widget-farge)] focus:ring-2 focus:ring-[var(--widget-farge)]/20 disabled:opacity-60"
         />
         <button
           type="submit"
           disabled={sender || !input.trim()}
           aria-label="Send melding"
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand text-brand-foreground transition hover:opacity-90 disabled:opacity-40"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--widget-farge)] text-white transition hover:opacity-90 disabled:opacity-40"
         >
           <svg viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4">
             <path d="M2.94 2.06 17.94 9.4a1 1 0 0 1 0 1.79L2.94 18.5a1 1 0 0 1-1.44-1.11L3.6 10 1.5 3.17a1 1 0 0 1 1.44-1.11Z" />

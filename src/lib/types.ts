@@ -9,6 +9,7 @@ export type Company = {
   stripe_customer_id: string | null;
   stripe_subscription_id: string | null;
   trial_ends_at: string | null;
+  widget_color: string;
   created_at: string;
 };
 

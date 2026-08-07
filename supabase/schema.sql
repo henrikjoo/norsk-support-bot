@@ -10,12 +10,14 @@ create table if not exists public.companies (
   stripe_customer_id text,
   stripe_subscription_id text,
   trial_ends_at timestamptz,
+  widget_color text not null default '#0d9488',
   created_at timestamptz not null default now(),
   unique (owner_id)
 );
 
--- Kjør denne linjen separat hvis companies-tabellen allerede finnes fra før:
+-- Kjør disse linjene separat hvis companies-tabellen allerede finnes fra før:
 -- alter table public.companies add column if not exists trial_ends_at timestamptz;
+-- alter table public.companies add column if not exists widget_color text not null default '#0d9488';
 
 -- Kunnskapsbase (én rad per bedrift, fritekstfelt for MVP)
 create table if not exists public.knowledge_base (

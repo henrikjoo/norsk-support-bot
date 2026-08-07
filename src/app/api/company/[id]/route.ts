@@ -20,7 +20,7 @@ export async function GET(
 
   const { data: company } = await supabase
     .from("companies")
-    .select("id, name")
+    .select("id, name, widget_color")
     .eq("id", id)
     .maybeSingle();
 

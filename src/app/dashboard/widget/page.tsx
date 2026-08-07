@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { hentBedriftForInnloggetBruker } from "@/lib/company";
 import { hentOrigin } from "@/lib/origin";
 import { CopyButton } from "./copy-button";
+import { FargeForm } from "./farge-form";
 
 export default async function WidgetInstallasjonPage() {
   const resultat = await hentBedriftForInnloggetBruker();
@@ -22,6 +23,15 @@ export default async function WidgetInstallasjonPage() {
       <p className="mb-8 text-sm text-neutral-600 dark:text-neutral-400">
         Velg metoden som passer best for hvordan nettsiden din er bygget.
       </p>
+
+      <section className="mb-8">
+        <h2 className="mb-2 text-base font-semibold">Temafarge</h2>
+        <p className="mb-3 text-sm text-neutral-600 dark:text-neutral-400">
+          Velg fargen som matcher nettsiden din. Endringen vises med det
+          samme i widgeten, uten at du behøver å lime inn koden på nytt.
+        </p>
+        <FargeForm farge={resultat.company.widget_color} />
+      </section>
 
       <section className="mb-8">
         <TrinnTittel nr={1}>Har du tilgang til koden på nettsiden?</TrinnTittel>
