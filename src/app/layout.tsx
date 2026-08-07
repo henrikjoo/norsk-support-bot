@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { CookieSamtykke } from "@/components/cookie-samtykke";
+import { KundeserviceWidget } from "@/components/kundeservice-widget";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -49,6 +50,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
         {children}
         <CookieSamtykke />
+        <KundeserviceWidget />
         <script
           type="application/ld+json"
           // eslint-disable-next-line react/no-danger
