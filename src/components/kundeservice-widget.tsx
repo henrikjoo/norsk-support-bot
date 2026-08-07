@@ -9,7 +9,12 @@ export function KundeserviceWidget() {
 
   // Widget-siden er selve chat-vinduet som embeddes andre steder —
   // skal ikke ha en widget inni seg selv.
-  if (!companyId || pathname?.startsWith("/widget")) {
+  if (pathname?.startsWith("/widget")) {
+    return null;
+  }
+
+  if (!companyId) {
+    console.warn("NEXT_PUBLIC_KUNDESERVICE_WIDGET_ID er ikke satt.");
     return null;
   }
 
