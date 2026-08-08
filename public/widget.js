@@ -10,11 +10,12 @@
 
   var origin = new URL(scriptEl.src).origin;
   var open = false;
+  var farge = "#0d9488";
 
   var style = document.createElement("style");
   style.textContent =
     ".nsb-widget-knapp{transition:transform .15s ease,box-shadow .15s ease}" +
-    ".nsb-widget-knapp:hover{transform:scale(1.06);box-shadow:0 6px 20px rgba(13,148,136,0.4)}";
+    ".nsb-widget-knapp:hover{transform:scale(1.06)}";
   document.head.appendChild(style);
 
   var button = document.createElement("button");
@@ -28,12 +29,12 @@
     "width:56px",
     "height:56px",
     "border-radius:9999px",
-    "background:#0d9488",
+    "background:" + farge,
     "color:#fff",
     "font-size:24px",
     "border:none",
     "cursor:pointer",
-    "box-shadow:0 4px 14px rgba(13,148,136,0.35)",
+    "box-shadow:0 4px 14px rgba(0,0,0,0.25)",
     "z-index:2147483000",
   ].join(";");
 
@@ -65,4 +66,16 @@
 
   document.body.appendChild(iframe);
   document.body.appendChild(button);
+
+  fetch(origin + "/api/company/" + encodeURIComponent(companyId))
+    .then(function (res) {
+      return res.ok ? res.json() : null;
+    })
+    .then(function (data) {
+      if (data && data.widget_color) {
+        farge = data.widget_color;
+        button.style.background = farge;
+      }
+    })
+    .catch(function () {});
 })();
